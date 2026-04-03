@@ -48,7 +48,7 @@ namespace HyperTizen.WebSocket
             }
 
             // Use HyperHDR's standard JSON/WebSocket port (19400) as default
-            string url = $"ws://{ip}:19400/";
+            string url = $"ws://192.168.1.3:19400/";
             Preference.Set("rpcServer", url);
             App.Configuration.RPCServer = url;
             Tizen.Log.Debug("HyperTizen", $"SSDP auto-discovered rpcServer: {url}");
