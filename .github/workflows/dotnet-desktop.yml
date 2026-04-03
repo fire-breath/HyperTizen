@@ -9,19 +9,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    # 1. Boot into a pure .NET 6 environment (No .NET 10 interference)
+    # Boot into a pure .NET 6 environment
     container: mcr.microsoft.com/dotnet/sdk:6.0
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    - name: Install Unzip
+      # The Microsoft container doesn't have unzip by default, so we install it here
+      run: |
+        apt-get update
+        apt-get install -y unzip curl
+
     - name: Inject Samsung Manifests and Install Tizen
       run: |
-        # 2. Download Samsung's official script and run it (without sudo, since we are root)
+        # Download and extract the manifest (now that unzip is installed)
         curl -sSL https://raw.githubusercontent.com/Samsung/Tizen.NET/main/workload/scripts/workload-install.sh | bash
         
-        # 3. Now the system 100% knows what Tizen is. Install it.
+        # Install the Tizen framework
         dotnet workload install tizen
 
     - name: Build HyperTizen
